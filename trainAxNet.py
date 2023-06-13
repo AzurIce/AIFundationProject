@@ -1,6 +1,7 @@
 import paddle
 import numpy as np
 from models.LeNet import LeNet
+from models.AxNet import AlexNet
 import paddle
 import paddle.nn.functional as F
 from tqdm import tqdm
@@ -14,7 +15,7 @@ def train(learn_rate, batch_size):
     train_loader = paddle.io.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = paddle.io.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
-    model = LeNet()
+    model = AlexNet()
     opt = paddle.optimizer.Adam(learning_rate=learn_rate, parameters=model.parameters())
     loss_fun = F.cross_entropy
 
@@ -71,7 +72,6 @@ def train(learn_rate, batch_size):
     print(loss_mean_list)
     print(f'best epoch: {best_epoch}, result: {best_result}')
 
-    return train_lost_mean_list, acc_mean_list, loss_mean_list, best_result, best_epoch
 
 if __name__ == '__main__':
     train(0.01, 64)
