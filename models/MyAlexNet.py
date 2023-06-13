@@ -3,9 +3,9 @@ from paddle.nn import Conv2D, MaxPool2D, Linear, Dropout, Layer
 import paddle.nn.functional as F
 
 
-class AlexNet(Layer):
+class MyAlexNet(Layer):
     def __init__(self):
-        super(AlexNet, self).__init__()
+        super(MyAlexNet, self).__init__()
         self.conv1 = Conv2D(in_channels=1, out_channels=48 * 2, kernel_size=5, stride=1, padding=2) # 1x28x28 -padding-> 1x32x32 -conv-> (48x2)x28x28
         self.max_pool1 = MaxPool2D(kernel_size=2, stride=2) # (48x2)x14x14
         self.conv2 = Conv2D(in_channels=48 * 2, out_channels=128 * 2, kernel_size=5, stride=1, padding=2) # (48x2)x14x14 -padding-> (48x2)x18x18 -conv-> (128x2)x14x14
