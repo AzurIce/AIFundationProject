@@ -1,13 +1,11 @@
-import os
-
 import PIL
 import paddle
 from paddle.io import Dataset
+from paddle.vision import Normalize
 from tqdm import tqdm
 
 
 class MyDataset(Dataset):
-
     def __init__(self, mode='train', transform=None):
         super(MyDataset, self).__init__()
         self.images = []
@@ -30,3 +28,11 @@ class MyDataset(Dataset):
 
     def __len__(self):
         return len(self.images)
+
+
+# 定义图像归一化处理方法，这里的CHW指图像格式需为 [C通道数，H图像高度，W图像宽度]
+transform = Normalize(mean=[127.5], std=[127.5], data_format='CHW')
+# 打印数据集样本数
+train_dataset = MyDataset(mode='train', transform=transform)
+test_dataset = MyDataset(mode='test', transform=transform)
+# print('train_dataset images: ', len(train_dataset), 'test_dataset images: ', len(test_dataset))
