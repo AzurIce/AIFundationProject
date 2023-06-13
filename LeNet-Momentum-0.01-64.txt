@@ -1,0 +1,11 @@
+BATCH_SIZE = 64
+LEARNING_RATE = 0.01
+EPOCHS = 20
+network = LeNet()
+model = paddle.Model(network)
+def train_model():
+    # Adadelta优化器
+    model.prepare(paddle.optimizer.Momentum(learning_rate=LEARNING_RATE, parameters=model.parameters()),
+                  paddle.nn.CrossEntropyLoss(),
+                  paddle.metric.Accuracy())
+
