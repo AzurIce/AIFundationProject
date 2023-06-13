@@ -1,0 +1,55 @@
+BATCH_SIZE = 64
+LEARNING_RATE = 0.01
+EPOCHS = 20
+network = LeNet()
+model = paddle.Model(network)
+def train_model():
+    # Adadelta优化器
+    model.prepare(paddle.optimizer.Adadelta(learning_rate=LEARNING_RATE, parameters=model.parameters()),
+                  paddle.nn.CrossEntropyLoss(),
+                  paddle.metric.Accuracy())
+
+The loss value printed in the log is the current step, and the metric is the average value of previous steps.
+Epoch 1/20
+step 1875/1875 [==============================] - loss: 0.5455 - acc: 0.7012 - 3ms/step          
+Epoch 2/20
+step 1875/1875 [==============================] - loss: 0.2577 - acc: 0.8965 - 3ms/step          
+Epoch 3/20
+step 1875/1875 [==============================] - loss: 0.1226 - acc: 0.9240 - 3ms/step          
+Epoch 4/20
+step 1875/1875 [==============================] - loss: 0.1749 - acc: 0.9368 - 3ms/step          
+Epoch 5/20
+step 1875/1875 [==============================] - loss: 0.0611 - acc: 0.9455 - 4ms/step          
+Epoch 6/20
+step 1875/1875 [==============================] - loss: 0.1244 - acc: 0.9514 - 4ms/step          
+Epoch 7/20
+step 1875/1875 [==============================] - loss: 0.1649 - acc: 0.9558 - 4ms/step          
+Epoch 8/20
+step 1875/1875 [==============================] - loss: 0.1337 - acc: 0.9591 - 3ms/step          
+Epoch 9/20
+step 1875/1875 [==============================] - loss: 0.1451 - acc: 0.9621 - 3ms/step          
+Epoch 10/20
+step 1875/1875 [==============================] - loss: 0.2470 - acc: 0.9641 - 3ms/step          
+Epoch 11/20
+step 1875/1875 [==============================] - loss: 0.1062 - acc: 0.9662 - 4ms/step          
+Epoch 12/20
+step 1875/1875 [==============================] - loss: 0.0696 - acc: 0.9676 - 3ms/step          
+Epoch 13/20
+step 1875/1875 [==============================] - loss: 0.0492 - acc: 0.9691 - 3ms/step          
+Epoch 14/20
+step 1875/1875 [==============================] - loss: 0.0296 - acc: 0.9704 - 3ms/step          
+Epoch 15/20
+step 1875/1875 [==============================] - loss: 0.1233 - acc: 0.9716 - 3ms/step          
+Epoch 16/20
+step 1875/1875 [==============================] - loss: 0.0552 - acc: 0.9728 - 3ms/step          
+Epoch 17/20
+step 1875/1875 [==============================] - loss: 0.0538 - acc: 0.9731 - 3ms/step          
+Epoch 18/20
+step 1875/1875 [==============================] - loss: 0.1389 - acc: 0.9743 - 3ms/step          
+Epoch 19/20
+step 1875/1875 [==============================] - loss: 0.1220 - acc: 0.9753 - 3ms/step          
+Epoch 20/20
+step 1875/1875 [==============================] - loss: 0.2717 - acc: 0.9757 - 3ms/step          
+Eval begin...
+step 313/313 [==============================] - loss: 0.0050 - acc: 0.9729 - 2ms/step          
+Eval samples: 20000
