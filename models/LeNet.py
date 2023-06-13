@@ -14,8 +14,8 @@ class LeNet(nn.Layer):
         self.linear2 = paddle.nn.Linear(in_features=120, out_features=84)
         self.linear3 = paddle.nn.Linear(in_features=84, out_features=10)
 
-    def forward(self, x):
-        x = self.conv1(x)
+    def forward(self, inputs):
+        x = self.conv1(inputs)
         x = F.relu(x)
         x = self.max_pool1(x)
         x = self.conv2(x)
