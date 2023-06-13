@@ -1,7 +1,10 @@
 import paddle
+import numpy as np
 from paddle.nn import Conv2D, MaxPool2D, Linear, Dropout, Layer
 import paddle.nn.functional as F
-
+from tqdm import tqdm
+from itertools import product
+from dataset import train_dataset, test_dataset
 
 class MyAlexNet(Layer):
     def __init__(self):
@@ -44,3 +47,37 @@ class MyAlexNet(Layer):
         x = self.drop2(x)
         x = self.fc3(x)
         return x
+
+from utils import redirect_stdout
+
+EPOCHS = 20
+batch_size = 128
+
+if __name__ == '__main__':
+    for learning_rate in tqdm(np.arange(0.05, 0, -0.01)):
+        with open(f'MyAlexNet-Momentum-{learning_rate}-{batch_size}.txt', 'w') as f:
+            with redirect_stdout(f):
+                # print(f'{batch_size}-{learning_rate}')
+                network = MyAlexNet()
+                model = paddle.Model(network)
+
+
+                def train_model():
+                    model.prepare(paddle.optimizer.Momentum(learning_rate=learning_rate, parameters=model.parameters()),
+                                  paddle.nn.CrossEntropyLoss(),
+                                  paddle.metric.Accuracy())
+                    # 模型训练
+                    model.fit(train_dataset, epochs=EPOCHS, batch_size=batch_size, verbose=1)
+                    # 保存模型
+                    model.save(f'./output/{learning_rate}/{batch_size}/MyAlexNet-Momentum')
+
+
+                train_model()
+                # 加载模型
+                # model.load(f'./output/{learning_rate}/{batch_size}/MyAlexNet-Momentum')
+
+                # 模型评估
+                model.prepare(paddle.optimizer.Momentum(learning_rate=learning_rate, parameters=model.parameters()),
+                              paddle.nn.CrossEntropyLoss(),
+                              paddle.metric.Accuracy())
+                model.evaluate(test_dataset, batch_size=batch_size, verbose=1)
