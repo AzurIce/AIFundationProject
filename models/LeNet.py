@@ -1,13 +1,6 @@
-import sys
-from itertools import product
-
-import numpy as np
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
-from tqdm import tqdm
-
-from dataset import train_dataset, test_dataset
 
 
 class LeNet(nn.Layer):
@@ -35,37 +28,3 @@ class LeNet(nn.Layer):
         x = F.relu(x)
         x = self.linear3(x)
         return x
-
-
-from utils import redirect_stdout
-
-EPOCHS = 20
-
-if __name__ == '__main__':
-    for batch_size, learning_rate in tqdm(list(product(range(1, 60000, 10), np.arange(0.1, 1.0, 0.1)))):
-        with open(f'LeNet-Adam-{learning_rate}-{batch_size}.txt', 'w') as f:
-            with redirect_stdout(f):
-                # print(f'{batch_size}-{learning_rate}')
-                network = LeNet()
-                model = paddle.Model(network)
-
-
-                def train_model():
-                    model.prepare(paddle.optimizer.Adam(learning_rate=learning_rate, parameters=model.parameters()),
-                                  paddle.nn.CrossEntropyLoss(),
-                                  paddle.metric.Accuracy())
-                    # 模型训练
-                    model.fit(train_dataset, epochs=EPOCHS, batch_size=batch_size, verbose=1)
-                    # 保存模型
-                    model.save(f'./output/{learning_rate}/{batch_size}/LeNet-Adam')
-
-
-                train_model()
-                # 加载模型
-                # model.load('output/LeNet-Adam-CrossEntropyLoss')
-
-                # 模型评估
-                model.prepare(paddle.optimizer.Adam(learning_rate=learning_rate, parameters=model.parameters()),
-                              paddle.nn.CrossEntropyLoss(),
-                              paddle.metric.Accuracy())
-                model.evaluate(test_dataset, batch_size=batch_size, verbose=1)

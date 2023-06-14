@@ -1,16 +1,11 @@
 import paddle
-import numpy as np
 from paddle.nn import Conv2D, MaxPool2D, Linear, Dropout
-# 组网
 import paddle.nn.functional as F
-# 定义 AlexNet 网络结构
 
 
 class AlexNet(paddle.nn.Layer):
     def __init__(self, num_classes=10):
         super(AlexNet, self).__init__()
-        # AlexNet与LeNet一样也会同时使用卷积和池化层提取图像特征
-        # 与LeNet不同的是激活函数换成了‘relu’
         self.conv1 = Conv2D(in_channels=1, out_channels=96, kernel_size=5, stride=1, padding=2)    #out 56  96    第一层改小一点
         # self.max_pool1 = MaxPool2D(kernel_size=2, stride=2)                                                  #out 28
         self.conv2 = Conv2D(in_channels=96, out_channels=256, kernel_size=5, stride=1, padding=2)     # 28

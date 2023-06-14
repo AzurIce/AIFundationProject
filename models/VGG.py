@@ -1,12 +1,3 @@
-import sys
-from itertools import product
-
-import numpy as np
-import paddle
-import paddle.nn as nn
-import paddle.nn.functional as F
-from tqdm import tqdm
-
 from dataset import train_dataset, test_dataset
 
 import paddle
@@ -14,7 +5,6 @@ import paddle
 __all__ = []
 
 from paddle.nn import Conv2D, MaxPool2D, BatchNorm2D, Linear
-
 
 
 class VGG(paddle.nn.Layer):
@@ -82,43 +72,3 @@ class VGG(paddle.nn.Layer):
         x = self.dropout2(self.relu(self.fc2(x)))
         x = self.fc3(x)
         return x
-
-
-from utils import redirect_stdout
-
-EPOCHS = 20
-EPOCHS = 1
-# build model
-
-def train(batch_size, learning_rate):
-    # with open(f'AlexNet-Adam-{learning_rate}-{batch_size}.txt', 'w') as f:
-    #     with redirect_stdout(f):
-            # print(f'{batch_size}-{learning_rate}')
-            # network = AlexNet()
-            network = VGG()
-            model = paddle.Model(network)
-
-            def train_model():
-                model.prepare(paddle.optimizer.Adam(learning_rate=learning_rate, parameters=model.parameters()),
-                              paddle.nn.CrossEntropyLoss(),
-                              paddle.metric.Accuracy())
-                # 模型训练
-                model.fit(train_dataset, epochs=EPOCHS, batch_size=batch_size, verbose=1)
-                # 保存模型
-                model.save(f'./output/{learning_rate}/{batch_size}/VGG-Adam')
-
-            train_model()
-            # 加载模型
-            # model.load(f'./output/{learning_rate}/{batch_size}/VGG-Adam')
-
-            # 模型评估
-            model.prepare(paddle.optimizer.Adam(learning_rate=learning_rate, parameters=model.parameters()),
-                          paddle.nn.CrossEntropyLoss(),
-                          paddle.metric.Accuracy())
-            model.evaluate(test_dataset, batch_size=batch_size, verbose=1)
-
-
-if __name__ == '__main__':
-    train(128, 0.01)
-    # for batch_size, learning_rate in tqdm(list(product(range(1, 60000, 10), np.arange(0.1, 1.0, 0.1)))):
-    #     train(batch_size, learning_rate)
