@@ -1,9 +1,10 @@
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
+import models
 
 
-class LeNet(nn.Layer):
+class LeNet(models.AIModel):
     def __init__(self):
         super(LeNet, self).__init__()
         self.conv1 = paddle.nn.Conv2D(in_channels=1, out_channels=6, kernel_size=5, stride=1, padding=2)
@@ -28,3 +29,13 @@ class LeNet(nn.Layer):
         x = F.relu(x)
         x = self.linear3(x)
         return x
+
+
+if __name__ == '__main__':
+    model = LeNet()
+    model.train_model('Adam', 0.01, 64)
+    model.evaluate_model('Adam', 0.01, 64) # {'loss': [2.3033571], 'acc': 0.1135}
+
+    model.train_model('Adam', 0.001, 64)
+    model.evaluate_model('Adam', 0.001, 64) # {'loss': [1.6726406e-06], 'acc': 0.9855}
+
