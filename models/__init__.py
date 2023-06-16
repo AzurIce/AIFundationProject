@@ -38,10 +38,10 @@ class AIModel(paddle.nn.Layer):
         # 模型训练
         self.model.fit(train_dataset, epochs=EPOCHS, batch_size=batch_size, verbose=1)
         # 保存模型
-        self.model.save(f'{os.getcwd()}/{self.__class__.__name__}-{opt_name}-{learning_rate}-{batch_size}/model')
+        self.model.save(f'{os.getcwd()}/output/{self.__class__.__name__}-{opt_name}-{learning_rate}-{batch_size}/model')
 
     def load_model(self, opt_name, learning_rate, batch_size):
-        self.model.load(f'{os.getcwd()}/LeNet-{opt_name}-{learning_rate}-{batch_size}/model')
+        self.model.load(f'{os.getcwd()}/output/{self.__class__.__name__}-{opt_name}-{learning_rate}-{batch_size}/model')
 
         # 模型评估
         self.model.prepare(
@@ -55,6 +55,6 @@ class AIModel(paddle.nn.Layer):
 
         self.load_model(opt_name, learning_rate, batch_size)
         eval_res = self.model.evaluate(test_dataset, batch_size)
-        with open(f'{os.getcwd()}/{self.__class__.__name__}-{opt_name}-{learning_rate}-{batch_size}/eval_res.txt', 'w') as f:
+        with open(f'{os.getcwd()}/output/{self.__class__.__name__}-{opt_name}-{learning_rate}-{batch_size}/eval_res.txt', 'w') as f:
             f.write(f'{eval_res}')
         print(eval_res)
