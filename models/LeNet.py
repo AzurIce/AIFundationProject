@@ -4,10 +4,10 @@ import numpy as np
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
-import models
+from . import AIModel
 
 
-class LeNet(models.AIModel):
+class LeNet(AIModel):
     def __init__(self):
         super(LeNet, self).__init__()
         self.conv1 = paddle.nn.Conv2D(in_channels=1, out_channels=6, kernel_size=5, stride=1, padding=2)
