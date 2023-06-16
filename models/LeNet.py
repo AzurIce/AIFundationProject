@@ -1,3 +1,6 @@
+from itertools import product
+
+import numpy as np
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
@@ -31,11 +34,58 @@ class LeNet(models.AIModel):
         return x
 
 
-if __name__ == '__main__':
+def test_optimizer():
     model = LeNet()
-    model.train_model('Adam', 0.01, 64)
-    model.evaluate_model('Adam', 0.01, 64) # {'loss': [2.3033571], 'acc': 0.1135}
+    # model.train_model('Adam', 0.001, 64)
+    # model.evaluate_model('Adam', 0.001, 64) # {'loss': [1.6726406e-06], 'acc': 0.9855}
 
-    model.train_model('Adam', 0.001, 64)
-    model.evaluate_model('Adam', 0.001, 64) # {'loss': [1.6726406e-06], 'acc': 0.9855}
+    # model.train_model('Adadelta', 0.001, 64)
+    # model.evaluate_model('Adadelta', 0.001, 64) # {'loss': [1.3049467], 'acc': 0.51515}
+    #
+    # model.train_model('Lamb', 0.001, 64)
+    # model.evaluate_model('Lamb', 0.001, 64) # {'loss': [1.176265], 'acc': 0.5243}
+    #
+    # model.train_model('SGD', 0.001, 64)
+    # model.evaluate_model('SGD', 0.001, 64) # {'loss': [1.0667422], 'acc': 0.5411}
+    #
+    # model.train_model('Momentum', 0.001, 64)
+    # model.evaluate_model('Momentum', 0.001, 64) # {'loss': [0.013127858], 'acc': 0.95475}
+
+    model.train_model('Adam', 0.005, 64)
+    model.evaluate_model('Adam', 0.005, 64) # {'loss': [1.6726406e-06], 'acc': 0.9855}
+
+    model.train_model('Adadelta', 0.005, 64)
+    model.evaluate_model('Adadelta', 0.005, 64) # {'loss': [1.3049467], 'acc': 0.51515}
+
+    model.train_model('Lamb', 0.005, 64)
+    model.evaluate_model('Lamb', 0.005, 64) # {'loss': [1.176265], 'acc': 0.5243}
+
+    model.train_model('SGD', 0.005, 64)
+    model.evaluate_model('SGD', 0.005, 64) # {'loss': [1.0667422], 'acc': 0.5411}
+
+    model.train_model('Momentum', 0.005, 64)
+    model.evaluate_model('Momentum', 0.005, 64) # {'loss': [0.013127858], 'acc': 0.95475}
+
+
+if __name__ == '__main__':
+    # test_optimizer()
+
+    for learning_rate, batch_size in list(product(np.arange(0.001, 0.01, 0.001), [16, 32, 64, 128, 256, 512])):
+        model = LeNet()
+        model.train_model('Momentum', learning_rate, batch_size)
+        model.evaluate_model('Momentum', learning_rate, batch_size)
+
+    # model = LeNet()
+    # model.train_model('Adam', 0.01, 64)
+    # model.evaluate_model('Adam', 0.01, 64) # {'loss': [2.3033571], 'acc': 0.1135}
+
+    # model.train_model('Adam', 0.001, 64)
+    # model.evaluate_model('Adam', 0.001, 64) # {'loss': [1.6726406e-06], 'acc': 0.9855}
+
+    # model.train_model('Adam', 0.001, 128)
+    # model.evaluate_model('Adam', 0.001, 128) # {'loss': [1.0132745e-06], 'acc': 0.9824}
+
+    # model.train_model('Adam', 0.006, 128)
+    # model.evaluate_model('Adam', 0.006, 128) # {'loss': [0.08492789], 'acc': 0.9404}
+
 
